@@ -9,7 +9,7 @@
  *      index: display the registration form; default action
  *      register: register the user by creating a user account
  *      login: display the login form
- *      verify: verfiy username and password
+ *      verify: verify username and password
  *      logout: log a user out
  *      reset: display the password reset form
  *      do_reset: update the password

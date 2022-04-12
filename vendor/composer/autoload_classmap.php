@@ -6,8 +6,12 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ComposerAutoloaderInit0891b5bd603241e13700161ab8834f23' => $vendorDir . '/composer/autoload_real.php',
+    'Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
+    'Composer\\Autoload\\ComposerStaticInit0891b5bd603241e13700161ab8834f23' => $vendorDir . '/composer/autoload_static.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Database' => $baseDir . '/application/database.class.php',
+    'DatabaseException' => $baseDir . '/exceptions/database_exception.class.php',
     'Index' => $baseDir . '/views/index/index.class.php',
     'Login' => $baseDir . '/views/login/login.class.php',
     'Logout' => $baseDir . '/views/logout/logout.class.php',

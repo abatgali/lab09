@@ -9,6 +9,11 @@
 class Register extends View {
 
     public function display($result) {
+
+        if ($result == false) {
+            exit();
+        }
+
         parent::header();
 
         ?>

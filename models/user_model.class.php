@@ -29,16 +29,24 @@ class UserModel {
 	
 		//hash the password
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-		
-        //construct an INSERT query
-        $sql = "INSERT INTO " . $this->db->getUserTable() . " VALUES(NULL, '$username', '$hashed_password', '$email', '$firstname', '$lastname')";
-        
+
         //execute the query and return true if successful or false if failed
-        if($this->dbConnection->query($sql) === TRUE) {
-            return true;
-        } else {
+        try {
+            //construct an INSERT query
+            $sql = "INSERT INTO " . $this->db->getUserTable() . " VALUES(NULL, '$username', '$hashed_password', '$email', '$firstname', '$lastname')";
+
+            if (!$this->dbConnection->query($sql)) {
+                throw new DatabaseException("Error has something to do with the database.");
+            }
+
+        } catch (DatabaseException $e) {
+            $view = new UserError();
+            $view->display($e->getMessage());
+
             return false;
         }
+
+        return true;
     }
 
     //verify username and password against a database record
