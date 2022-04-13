@@ -9,6 +9,10 @@
 class ResetConfirm extends View {
 
     public function display($result) {
+
+    if ($result == false) {
+        exit();
+    }
         View::header();
         ?>
 

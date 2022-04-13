@@ -9,6 +9,7 @@
 class Verify extends View {
 
     public function display($result) {
+
         parent::header();
 
         ?>

@@ -11,6 +11,7 @@ class ComposerStaticInit0891b5bd603241e13700161ab8834f23
         'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
         'Composer\\Autoload\\ComposerStaticInit0891b5bd603241e13700161ab8834f23' => __DIR__ . '/..' . '/composer/autoload_static.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'DataMissing' => __DIR__ . '/../..' . '/exceptions/data_missing_exception.class.php',
         'Database' => __DIR__ . '/../..' . '/application/database.class.php',
         'DatabaseException' => __DIR__ . '/../..' . '/exceptions/database_exception.class.php',
         'Index' => __DIR__ . '/../..' . '/views/index/index.class.php',

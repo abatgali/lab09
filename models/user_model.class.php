@@ -7,31 +7,39 @@
  * Description: The UserModel class manages user data in the database.
  */
 
-class UserModel {
+class UserModel
+{
 
     //private data members
     private $db;
     private $dbConnection;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Database::getInstance();
         $this->dbConnection = $this->db->getConnection();
     }
 
     //add a user into the "users" table in the database
-    public function add_user() {
+    public function add_user()
+    {
         //retrieve user inputs from the registration form
         $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
-		$password = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
+        $password = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
         $lastname = filter_input(INPUT_POST, "lname", FILTER_SANITIZE_STRING);
         $firstname = filter_input(INPUT_POST, 'fname', FILTER_SANITIZE_STRING);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-	
-		//hash the password
+
+        //hash the password
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         //execute the query and return true if successful or false if failed
         try {
+
+            if ($username == "" OR $password == "" OR $lastname == "" OR $firstname == "" OR $email == "") {
+                throw new DataMissing("Data is missing. Better luck next time.");
+            }
+
             //construct an INSERT query
             $sql = "INSERT INTO " . $this->db->getUserTable() . " VALUES(NULL, '$username', '$hashed_password', '$email', '$firstname', '$lastname')";
 
@@ -39,7 +47,18 @@ class UserModel {
                 throw new DatabaseException("Error has something to do with the database.");
             }
 
+
+        } catch (DataMissing $e) {
+            $view = new UserError();
+            $view->display($e->getMessage());
+
+            return false;
         } catch (DatabaseException $e) {
+            $view = new UserError();
+            $view->display($e->getMessage());
+
+            return false;
+        } catch (Exception $e) {
             $view = new UserError();
             $view->display($e->getMessage());
 
@@ -50,19 +69,20 @@ class UserModel {
     }
 
     //verify username and password against a database record
-    public function verify_user() {
+    public function verify_user()
+    {
         //retrieve username and password
         $username = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING));
         $password = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
 
         //sql statement to filter the users table data with a username
         $sql = "SELECT password FROM " . $this->db->getUserTable() . " WHERE username='$username'";
-  
-       //execute the query
+
+        //execute the query
         $query = $this->dbConnection->query($sql);
-        
+
         //verify password; if password is valid, set a temporary cookie
-        if($query AND $query->num_rows > 0) {
+        if ($query and $query->num_rows > 0) {
             $result_row = $query->fetch_assoc();
             $hash = $result_row['password'];
             if (password_verify($password, $hash)) {
@@ -70,38 +90,56 @@ class UserModel {
                 return true;
             }
         }
-        
+
         return false;
     }
 
     //logout user: destroy session data
-    public function logout() {
+    public function logout()
+    {
         //destroy session data
         setcookie("user", '', -10);
         return true;
     }
 
     //reset password
-    public function reset_password() {
-		//retrieve username and password from a form
+    public function reset_password()
+    {
+        //retrieve username and password from a form
         $username = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING));
         $password = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
-        
+
         //hash the password
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        
-        //the sql statement for update
-        $sql = "UPDATE  " . $this->db->getUserTable() . " SET password='$hashed_password' WHERE username='$username'";
+        try {
 
-        //execute the query
-        $query = $this->dbConnection->query($sql);
+            if ($username == "" OR $password == "") {
+                throw new DataMissing("Data is missing. Better luck next time.");
+            }
 
-        //return false if no rows were affected
-        if(!$query || $this->dbConnection->affected_rows == 0) {
-           
+            //the sql statement for update
+            $sql = "UPDATE  " . $this->db->getUserTable() . " SET password='$hashed_password' WHERE username='$username'";
+
+            if (!$this->dbConnection->query($sql)) {
+                throw new DatabaseException("Error has something to do with the database.");
+            }
+        } //return false if no rows were affected
+
+        catch (DataMissing $e) {
+            $view = new UserError();
+            $view->display($e->getMessage());
+            return false;
+
+        } catch (DatabaseException $e) {
+            $view = new UserError();
+            $view->display($e->getMessage());
+            return false;
+
+        } catch (Exception $e) {
+            $view = new UserError();
+            $view->display($e->getMessage());
             return false;
         }
-       
         return true;
     }
 }

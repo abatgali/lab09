@@ -6,3 +6,6 @@
  * Description:
  */
 
+class DataMissing extends Exception {
+    //leave empty
+}

@@ -10,6 +10,7 @@ return array(
     'Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
     'Composer\\Autoload\\ComposerStaticInit0891b5bd603241e13700161ab8834f23' => $vendorDir . '/composer/autoload_static.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'DataMissing' => $baseDir . '/exceptions/data_missing_exception.class.php',
     'Database' => $baseDir . '/application/database.class.php',
     'DatabaseException' => $baseDir . '/exceptions/database_exception.class.php',
     'Index' => $baseDir . '/views/index/index.class.php',
