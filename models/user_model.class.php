@@ -47,6 +47,9 @@ class UserModel
                 throw new DatabaseException("Error has something to do with the database.");
             }
 
+            if (Utilities::checkemail($email) == FALSE) {
+                throw new EmailFormatException("Your email was not entered using the correct format of sername@mydomain.domain.");
+            }
 
         } catch (DataMissing $e) {
             $view = new UserError();
@@ -54,6 +57,11 @@ class UserModel
 
             return false;
         } catch (DatabaseException $e) {
+            $view = new UserError();
+            $view->display($e->getMessage());
+
+            return false;
+        } catch (EmailFormatException $e) {
             $view = new UserError();
             $view->display($e->getMessage());
 

@@ -13,6 +13,7 @@ return array(
     'DataMissing' => $baseDir . '/exceptions/data_missing_exception.class.php',
     'Database' => $baseDir . '/application/database.class.php',
     'DatabaseException' => $baseDir . '/exceptions/database_exception.class.php',
+    'EmailFormatException' => $baseDir . '/exceptions/email_format_exception.class.php',
     'Index' => $baseDir . '/views/index/index.class.php',
     'Login' => $baseDir . '/views/login/login.class.php',
     'Logout' => $baseDir . '/views/logout/logout.class.php',

@@ -14,6 +14,7 @@ class ComposerStaticInit0891b5bd603241e13700161ab8834f23
         'DataMissing' => __DIR__ . '/../..' . '/exceptions/data_missing_exception.class.php',
         'Database' => __DIR__ . '/../..' . '/application/database.class.php',
         'DatabaseException' => __DIR__ . '/../..' . '/exceptions/database_exception.class.php',
+        'EmailFormatException' => __DIR__ . '/../..' . '/exceptions/email_format_exception.class.php',
         'Index' => __DIR__ . '/../..' . '/views/index/index.class.php',
         'Login' => __DIR__ . '/../..' . '/views/login/login.class.php',
         'Logout' => __DIR__ . '/../..' . '/views/logout/logout.class.php',
