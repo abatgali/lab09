@@ -1,6 +1,6 @@
 <?php
 /**
- * Author: Anant Batgali
+ * Author: Kavin Thakkar
  * Date: 4/12/22
  * File: database_exception.class.php
  * Description:

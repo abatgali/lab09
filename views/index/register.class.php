@@ -19,7 +19,7 @@ class Register extends View {
         ?>
         <div class="top-row">CREATE AN ACCOUNT</div>
         <div class="middle-row">
-            <p><?= $result ?></p>
+            <p><?php if ($result){ echo "You have successfully registered."; } ?></p>
         </div>
         <div class="bottom-row">         
             <span style="float: left">Already have an account? <a href="index.php?action=login">Login</a></span>

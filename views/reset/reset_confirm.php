@@ -23,7 +23,7 @@ class ResetConfirm extends View {
         <div class="bottom-row">         
             <span style="float: left">
                 <?php
-                if (strpos($result, "successful") == true) { //display the logout button
+                if ($result) { //display the logout button
                     echo "Want to log out? <a href='index.php?action=logout'>Logout</a>";
                 } else { //display the reset button
                     echo "Reset password? <a href='index.php?action=reset'>Reset</a>";

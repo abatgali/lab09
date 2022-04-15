@@ -15,13 +15,14 @@ class Verify extends View {
         ?>
         <div class="top-row">Login</div>
         <div class="middle-row">
-            <p><?= $result ?></p>
+            <p><?php if ($result){ echo "You have logged in.";} ?></p>
         </div>
         <div class="bottom-row">
             <span style="float: left">
                 <?php
-                if (strpos($result, "successful") == true) { //if the user has logged in, display the logout button
+                if ($result) { //if the user has logged in, display the logout button
                     echo "Want to log out? <a href='index.php?action=logout'>Logout</a>";
+                    //setcookie("user", $username);
                 } else { //if the user has not logged in, display the login button
                     echo "Already have an account? <a href='index.php?action=login'>Login</a>";
                 }

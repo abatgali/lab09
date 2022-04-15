@@ -7,22 +7,19 @@
  * Description: The UserModel class manages user data in the database.
  */
 
-class UserModel
-{
+class UserModel {
 
     //private data members
     private $db;
     private $dbConnection;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->db = Database::getInstance();
         $this->dbConnection = $this->db->getConnection();
     }
 
     //add a user into the "users" table in the database
-    public function add_user()
-    {
+    public function add_user() {
         //retrieve user inputs from the registration form
         $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
         $password = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
@@ -37,21 +34,30 @@ class UserModel
         try {
 
             if ($username == "" OR $password == "" OR $lastname == "" OR $firstname == "" OR $email == "") {
-                throw new DataMissing("Data is missing. Better luck next time.");
+                throw new DataMissingException("Data is missing. Fill in all fields.");
+            }
+
+            if (Utilities::checkemail($email) == FALSE) {
+                throw new EmailFormatException("The email format is invalid. Use correct format.");
+            }
+
+            if (strlen($password) < 5) {
+                throw new DataLengthException("The password length is invalid. Use at least 5 characters.");
             }
 
             //construct an INSERT query
             $sql = "INSERT INTO " . $this->db->getUserTable() . " VALUES(NULL, '$username', '$hashed_password', '$email', '$firstname', '$lastname')";
 
             if (!$this->dbConnection->query($sql)) {
-                throw new DatabaseException("Error has something to do with the database.");
+                throw new DatabaseException("The SQL query or the database connection is invalid.");
             }
 
-            if (Utilities::checkemail($email) == FALSE) {
-                throw new EmailFormatException("Your email was not entered using the correct format of username@mydomain.domain.");
-            }
+        } catch (DataMissingException $e) {
+            $view = new UserError();
+            $view->display($e->getMessage());
+            return false;
 
-        } catch (DataMissing $e) {
+        } catch (DataLengthException $e) {
             $view = new UserError();
             $view->display($e->getMessage());
             return false;
@@ -71,16 +77,20 @@ class UserModel
             $view->display($e->getMessage());
             return false;
 
-        }
-        return true;
+        }   return true;
     }
 
     //verify username and password against a database record
-    public function verify_user()
-    {
+    public function verify_user() {
         //retrieve username and password
         $username = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING));
         $password = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
+
+        try {
+
+            if ($username == "" OR $password == "") {
+                throw new DataMissingException("Data is missing. Fill in all fields.");
+            }
 
         //sql statement to filter the users table data with a username
         $sql = "SELECT password FROM " . $this->db->getUserTable() . " WHERE username='$username'";
@@ -88,30 +98,48 @@ class UserModel
         //execute the query
         $query = $this->dbConnection->query($sql);
 
+        if (!$query) {
+            throw new DatabaseException("The SQL query or the database connection is invalid.");
+        }
+
         //verify password; if password is valid, set a temporary cookie
-        if ($query and $query->num_rows > 0) {
+        if (
+            //$query and
+            $query->num_rows > 0) {
             $result_row = $query->fetch_assoc();
             $hash = $result_row['password'];
             if (password_verify($password, $hash)) {
-                setcookie("user", $username);
+                $_SESSION['user'] = $username;
                 return true;
+                }
             }
-        }
+            } catch (DataMissingException $e) {
+                $view = new UserError();
+                $view->display($e->getMessage());
+                return false;
 
+            } catch (DatabaseException $e) {
+                $view = new UserError();
+                $view->display($e->getMessage());
+                return false;
+
+            } catch (Exception $e) {
+                $view = new UserError();
+                $view->display($e->getMessage());
+                return false;
+            }
         return false;
     }
 
     //logout user: destroy session data
-    public function logout()
-    {
+    public function logout() {
         //destroy session data
         setcookie("user", '', -10);
         return true;
     }
 
     //reset password
-    public function reset_password()
-    {
+    public function reset_password() {
         //retrieve username and password from a form
         $username = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING));
         $password = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
@@ -121,18 +149,27 @@ class UserModel
         try {
 
             if ($username == "" OR $password == "") {
-                throw new DataMissing("Data is missing. Better luck next time.");
+                throw new DataMissingException("Data is missing. Fill in all fields.");
+            }
+
+            if (strlen($password) < 5) {
+                throw new DataLengthException("The password length is invalid. Use at least 5 characters.");
             }
 
             //the sql statement for update
             $sql = "UPDATE  " . $this->db->getUserTable() . " SET password='$hashed_password' WHERE username='$username'";
 
             if (!$this->dbConnection->query($sql)) {
-                throw new DatabaseException("Error has something to do with the database.");
+                throw new DatabaseException("The SQL query or the database connection is invalid.");
             }
         } //return false if no rows were affected
 
-        catch (DataMissing $e) {
+        catch (DataMissingException $e) {
+            $view = new UserError();
+            $view->display($e->getMessage());
+            return false;
+
+        } catch (DataLengthException $e) {
             $view = new UserError();
             $view->display($e->getMessage());
             return false;
