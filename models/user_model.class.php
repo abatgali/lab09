@@ -95,7 +95,7 @@ class UserModel
         try {
 
             if ($password == "" || $username == "")
-                throw new DataMissing("Data Missing Error: Can't leave any of the fields empty.");
+                throw new DataMissingException("Data Missing Error: Can't leave any of the fields empty.");
 
             //sql statement to filter the users' table data with a username
             $sql = "SELECT password FROM " . $this->db->getUserTable() . " WHERE username = '$username'";
@@ -116,7 +116,7 @@ class UserModel
                     return true;
                 }
             }
-        } catch (DataMissing $e) {
+        } catch (DataMissingException $e) {
             $view = new UserError();
             $view->display($e->getMessage());
             return false;
@@ -155,7 +155,7 @@ class UserModel
         try {
 
             if ($username == "" OR $password == "") {
-                throw new DataMissing("Data is missing. Better luck next time.");
+                throw new DataMissingException("Data is missing. Better luck next time.");
             }
 
             // password too short error
@@ -170,7 +170,7 @@ class UserModel
             }
         } //return false if no rows were affected
 
-        catch (DataMissing $e) {
+        catch (DataMissingException $e) {
             $view = new UserError();
             $view->display($e->getMessage());
             return false;

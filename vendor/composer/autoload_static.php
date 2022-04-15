@@ -12,7 +12,7 @@ class ComposerStaticInit0891b5bd603241e13700161ab8834f23
         'Composer\\Autoload\\ComposerStaticInit0891b5bd603241e13700161ab8834f23' => __DIR__ . '/..' . '/composer/autoload_static.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'DataLengthException' => __DIR__ . '/../..' . '/exceptions/data_length_exception.class.php',
-        'DataMissing' => __DIR__ . '/../..' . '/exceptions/data_missing_exception.class.php',
+        'DataMissingException' => __DIR__ . '/../..' . '/exceptions/data_missing_exception.class.php',
         'Database' => __DIR__ . '/../..' . '/application/database.class.php',
         'DatabaseException' => __DIR__ . '/../..' . '/exceptions/database_exception.class.php',
         'EmailFormatException' => __DIR__ . '/../..' . '/exceptions/email_format_exception.class.php',

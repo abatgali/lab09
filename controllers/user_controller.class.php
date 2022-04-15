@@ -61,7 +61,7 @@ class UserController {
     //display the password reset form or an error message.
     public function reset() {
         if (!isset($_SESSION['user'])) {  //if the user has not logged in
-            $this->error("To reset your password, please log in first.");
+            $this->error("To reset your password, please log in first. If you have already logged in, then this is broken.");
         } else { //if the user has logged in.
             $user = $_SESSION['user'];
             $view = new Reset();
