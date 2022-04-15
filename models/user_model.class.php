@@ -102,15 +102,13 @@ class UserModel {
             throw new DatabaseException("The SQL query or the database connection is invalid.");
         }
 
-        //verify password; if password is valid, set a temporary cookie
-        if (
-            //$query and
-            $query->num_rows > 0) {
-            $result_row = $query->fetch_assoc();
-            $hash = $result_row['password'];
-            if (password_verify($password, $hash)) {
-                $_SESSION['user'] = $username;
-                return true;
+            //verify password; if password is valid, set a temporary cookie
+            if($query AND $query->num_rows > 0) {
+                $result_row = $query->fetch_assoc();
+                $hash = $result_row['password'];
+                if (password_verify($password, $hash)) {
+                    setcookie("user", $username);
+                    return true;
                 }
             }
             } catch (DataMissingException $e) {
