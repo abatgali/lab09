@@ -10,7 +10,7 @@ class ResetConfirm extends View {
 
     public function display($result) {
 
-    if ($result == false) {
+    if (!$result) {
         exit();
     }
         View::header();
@@ -18,7 +18,7 @@ class ResetConfirm extends View {
 
         <div class="top-row">Reset password</div>
         <div class="middle-row">
-            <p><?= $result ?></p>
+            <p><?php echo "Password reset confirm class"; ?></p>
         </div>
         <div class="bottom-row">         
             <span style="float: left">
