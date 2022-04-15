@@ -9,13 +9,6 @@
 class ResetConfirm extends View {
 
     public function display($result) {
-<<<<<<< HEAD
-=======
-
-    if ($result == false) {
-        exit();
-    }
->>>>>>> parent of ecf4386 (This works I guess)
         View::header();
 
         $message = $result ? "You have successfully reset your password." : "Your last attempt to reset password failed. Please try again.";
@@ -23,11 +16,6 @@ class ResetConfirm extends View {
 
         <div class="top-row">Reset password</div>
         <div class="middle-row">
-<<<<<<< HEAD
-            <p><?= $message ?></p>
-=======
-            <p><?= $result ?></p>
->>>>>>> parent of ecf4386 (This works I guess)
         </div>
         <div class="bottom-row">
             <span style="float: left">
