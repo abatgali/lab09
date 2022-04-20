@@ -26,11 +26,11 @@ class UserController {
     //create a user account by calling the addUser method of a userModel object
     public function register() {
         //call the addUser method of the UserModel object
-        $retult = $this->user_model->add_user();
+        $result = $this->user_model->add_user();
 
         //display result
         $view = new Register();
-        $view->display($retult);
+        $view->display($result);
     }
 
     //display the login form
